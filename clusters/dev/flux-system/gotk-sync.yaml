@@ -14,14 +14,16 @@ spec:
   url: ssh://git@github.com/gschuurman/DTaaS
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
+kind: GitRepository
 metadata:
-  name: flux-system
+  name: clusters-dev
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 1m0s
+  ref:
+    branch: main
+  secretRef:
+    name: flux-system
+  url: ssh://git@github.com/gschuurman/DTaaS
   path: ./clusters/dev
   prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system

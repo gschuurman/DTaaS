@@ -11,3 +11,19 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: traefik-manifest-source
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./apps/traefik
+  prune: true
+  ref:
+    branch: main
+  secretRef:
+    name: flux-system
+  url: ssh://git@github.com/gschuurman/DTaaS

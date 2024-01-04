@@ -1,13 +1,15 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
 metadata:
-  name: dashboard-source
+  name: gitops-dashboard-manifest-source
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: 1m0s
   path: ./apps/gitops-dashboard
   prune: true
-  sourceRef:
-    kind: GitRepository
+  ref:
+    branch: main
+  secretRef:
     name: flux-system
+  url: ssh://git@github.com/gschuurman/DTaaS
