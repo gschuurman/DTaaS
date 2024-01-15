@@ -9,8 +9,6 @@ spec:
     spec:
       chart: ckan
       reconcileStrategy: ChartVersion
-      install:
-        createNamespace: true
       sourceRef:
         kind: HelmRepository
         name: keitaro-charts
