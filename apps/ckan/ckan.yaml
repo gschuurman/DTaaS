@@ -12,5 +12,4 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: keitaro-charts
-        namespace: ckan
   interval: 1m0s

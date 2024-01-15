@@ -8,7 +8,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
   name: keitaro-charts
-  namespace: flux-system
+  namespace: ckan
 spec:
   interval: 1m0s
   url: https://keitaro-charts.storage.googleapis.com
@@ -18,7 +18,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: ckan-source-folder
-  namespace: flux-system
+  namespace: ckan
 spec:
   interval: 10m0s
   path: ./apps/ckan
@@ -26,3 +26,4 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
