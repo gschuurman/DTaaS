@@ -11,7 +11,7 @@ metadata:
   namespace: ckan
 spec:
   interval: 1m0s
-  url: https://keitaro-charts.storage.googleapis.com
+  url: https://git.schuurman-it.com/api/packages/packages/helm
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1

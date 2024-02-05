@@ -1,0 +1,48 @@
+###################
+### Extensions ####
+###################
+FROM keitaro/ckan:2.10.3 as extbuild
+
+# Locations and tags, please use specific tags or revisions
+ENV FEDARATED_SEARCH_GIT_URL=https://github.com/DataShades/ckanext-searchfed
+ENV FEDARATED_SEARCH_GIT_BRANCH=master
+
+# Switch to the root user
+USER root
+
+# Install necessary packages to build extensions
+RUN apk update --no-cache && \
+    apk upgrade --no-cache && \
+    apk add --no-cache \
+    python3-dev \
+    gcc \
+    g++ \
+    libffi-dev \
+    openssl-dev \
+    rust \
+    cargo
+
+RUN pip wheel --wheel-dir=/wheels git+${FEDARATED_SEARCH_GIT_URL}@${FEDARATED_SEARCH_GIT_BRANCH}
+
+USER ckan
+
+############
+### MAIN ###
+############
+FROM keitaro/ckan:2.10.3
+
+ENV CKAN__PLUGINS envvars image_view text_view recline_view datastore datapusher searchfed
+
+# Switch to the root user
+USER root
+
+COPY --from=extbuild /wheels /srv/app/ext_wheels
+
+# Install and enable the custom extensions
+RUN pip install --no-index --find-links=/srv/app/ext_wheels ckanext_searchfed && \
+    # Configure plugins
+    ckan config-tool "${APP_DIR}/production.ini" "ckan.plugins = ${CKAN__PLUGINS}" && \
+    chown -R ckan:ckan /srv/app
+
+# Switch to the ckan user
+USER ckan
